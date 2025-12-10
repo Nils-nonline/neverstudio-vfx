@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Neverstudio VFX</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        canvas {
+            width: 100vw;
+            height: 100vh;
+            margin:0px;
+            top: 0px;
+            left: 0px;
+            position: absolute;
+        }
+
+    </style>
+</head>
+<body>
+    <script type="importmap">
+    {
+      "imports": {
+        "three": "/three/build/three.module.js",
+        "postprocessing":"/postprocessing/build/index.js",
+        "neverstudio-vfx":"/neverstudio/index.js"
+      }
+    }
+    </script>
+    <script type="module" src="script.js"></script>
+</body>
+</html>
+
