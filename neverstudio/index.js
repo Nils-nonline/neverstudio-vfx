@@ -306,7 +306,7 @@ class FireLine{
 
         this.frame = 0;
 
-        this.upperEnd = config.upperEnd || 2;
+        this.upperEnd = config.upperEnd || 5;
 
         this.endPoints = config.endPoints || [new THREE.Vector3(-5,0,0),new THREE.Vector3(5,0,0)];
 
@@ -342,6 +342,8 @@ class FireLine{
             dict["x_factor"] = Math.cos(angle);
             dict["z_factor"] = Math.sin(angle);
             dict["y_offset"] = Math.random() * Math.PI * 2;
+            dict["max_height_factor"] = Math.random()/(1/0.75) + 0.25;
+            dict["color_offset"] = Math.random() * 50;
 
             this.noise.push(dict);
         }
@@ -357,6 +359,7 @@ class FireLine{
         let matrix = new THREE.Matrix4();
 
         for (let i = 0; i < this.count; i++) {
+            matrix.makeScale(1,1,1);
             matrix.setPosition(...this.getInitialPos(true));
             this.mesh.setMatrixAt(i, matrix)
             this.mesh.setColorAt(i, this.getInitialColor())
@@ -395,27 +398,33 @@ class FireLine{
 
             matrix.decompose(pos, quaternion, scale);
 
+            scale.set(1,1,1);
+
+            scale.multiplyScalar(1.5-pos.y/this.upperEnd);//2-pos.y/this.upperEnd
+
             pos = this.noise[i]["lastPos"] || pos;
 
             pos.add(new THREE.Vector3( -0.004*Math.random(), noise["speed"]*this.speed, 0));
 
-            if(pos.y > this.upperEnd){
+            if(pos.y > this.upperEnd * noise["max_height_factor"]){
                 pos.set(...this.getInitialPos());
                 this.mesh.setColorAt(i, this.getInitialColor());
             }
 
             this.noise[i]["lastPos"] = pos.clone();
-    
+            
+            matrix.makeScale(scale.x, scale.y, scale.z);
             matrix.setPosition(pos.x + Math.sin(this.frame/4 + noise["y_offset"])/15 * noise["x_factor"], pos.y, pos.z + Math.sin(this.frame/4 + noise["y_offset"])/15 * noise["z_factor"]);
+            
 
             this.mesh.setMatrixAt(i, matrix)
 
             let color = new THREE.Color();
             this.mesh.getColorAt(i, color);
 
-            let time = pos.y/(noise["speed"]*this.speed) / ((this.upperEnd-this.position.y)/3)
+            let time = pos.y/(noise["speed"]*this.speed) / ((this.upperEnd-this.position.y)/3) + noise["color_offset"]
 
-            this.mesh.setColorAt(i, new THREE.Color(1,1-0.005*time,1-0.01*time));
+            this.mesh.setColorAt(i, new THREE.Color(1,1-0.006*time,1-0.02*time));
         }
         
         this.mesh.instanceMatrix.needsUpdate = true;
