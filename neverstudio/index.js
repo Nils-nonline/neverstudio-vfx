@@ -318,7 +318,7 @@ class FireLine{
         this.material = new THREE.MeshBasicMaterial({"transparent":true,"opacity":0.8})
         this.mesh = new THREE.InstancedMesh( this.geometry, this.material, this.count);
 
-        this.speed = config.speed || 0.01;
+        this.speed = config.speed || 0.04;
 
         this.noise = [];
 
@@ -400,7 +400,7 @@ class FireLine{
 
             scale.set(1,1,1);
 
-            scale.multiplyScalar(1.5-pos.y/this.upperEnd);//2-pos.y/this.upperEnd
+            scale.multiplyScalar(1.5-pos.y/this.upperEnd);
 
             pos = this.noise[i]["lastPos"] || pos;
 
@@ -422,7 +422,7 @@ class FireLine{
             let color = new THREE.Color();
             this.mesh.getColorAt(i, color);
 
-            let time = pos.y/(noise["speed"]*this.speed) / ((this.upperEnd-this.position.y)/3) + noise["color_offset"]
+            let time = (pos.y-this.position.y)/(this.upperEnd-this.position.y)/ 0.003/noise["speed"] + noise["color_offset"]
 
             this.mesh.setColorAt(i, new THREE.Color(1,1-0.006*time,1-0.02*time));
         }
