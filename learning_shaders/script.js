@@ -49,7 +49,7 @@ Varyings:
 
 */
 
-const material1 = new THREE.ShaderMaterial({
+const material = new THREE.ShaderMaterial({
     uniforms: {
         time: { value: 0.0 },
         lightPos: { value: new THREE.Vector3(0, 10, 50) }
@@ -63,33 +63,30 @@ void main() {
     vPos = position;
     vNormal = normalize(normal);
     vec3 pos = position;
-
-    pos.x = pos.z/pos.y;
-    pos.x = pos.x/pos.y;        
     gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
 }
     `,
     fragmentShader: `
 uniform vec3 lightPos;
+uniform float time;
 varying vec3 vNormal;
 varying vec3 vPos;
 
 void main() {
-vec3 lightDir = normalize(lightPos - vPos);
+    vec3 lightDir = normalize(lightPos - vPos);
     float diff = max(dot(vNormal, lightDir), 0.0);
-    vec3 color = vec3(1.0, 1.0, 1.0) * diff; // White color
+    vec3 color = vec3(1.0, 1.0, 1.0) * diff;
     gl_FragColor = vec4(color, 1.0);
-}
-            
+}   
         `
 });
 
 // ---------- ----------
 // GEOMETRY, MESH
 // ---------- ----------
-const geo = new THREE.TorusGeometry( 3, 1, 100, 100);
+const geo = new THREE.BoxGeometry( 2, 2, 2, 100, 100);
 geo.rotateX(Math.PI * 0.5);
-const mesh = new THREE.Mesh(geo, material1);
+const mesh = new THREE.Mesh(geo, material);//[material2, material1]
 mesh.position.y = 1;
 scene.add(mesh);
 
@@ -98,7 +95,7 @@ scene.add(mesh);
 // ---------- ----------
 
 function animate(time) {
-  material1.uniforms.time.value = time * 0.005;
+  material.uniforms.time.value = time * 0.005;
   renderer.render(scene, camera);
   requestAnimationFrame(animate);
 }
