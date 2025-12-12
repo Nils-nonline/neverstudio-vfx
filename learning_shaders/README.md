@@ -1,4 +1,4 @@
 TODO:
 
 - learn what raymarching is
-- fin some proper shader tutorials
+- find some proper shader tutorials
