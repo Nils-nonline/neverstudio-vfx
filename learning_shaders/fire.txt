@@ -1,0 +1,31 @@
+//Stackoverflow noise func
+float PHI = 1.61803398874989484820459;
+
+float rand(in float x, in float seed){
+       return fract(tan(distance(x*PHI, x)*seed)*x);
+}
+//END
+
+float nextInt(float val){
+    return float(int(val));
+}
+
+
+void mainImage( out vec4 fragColor, in vec2 fragCoord )
+{
+    
+    float x = fragCoord.x + sin(fragCoord.y/20.0 - iTime*20.0) * 5.0;
+    float y = fragCoord.y + sin(x/20.0) * 40.0;
+    
+
+    float color_factor = y;
+    
+    vec3 col = vec3(1.0-color_factor/600.0,1.0-color_factor/300.0,1.0-color_factor/30.0);
+    
+    fragColor = vec4(col,1.0);
+}
+
+/*
+TODO:
+Add more randomness
+*/
