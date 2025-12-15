@@ -74,7 +74,7 @@ float simplex(vec2 v){
 
 void main()
 {
-	if (vNormal.y > 0.5) {
+	if (vNormal.y > 0.9 || vNormal.y < -0.9) {
 		discard;
 	}
 	
@@ -533,7 +533,7 @@ class FireLineShader{
         this.frame = 0;
 	
 		this.size = config.size || 2;
-        this.dimensions = config.dim || config.dimension || new THREE.Vector3(100,2,1);
+        this.dimensions = config.dim || config.dimension || new THREE.Vector3(10,2,1);
         
         this.position = config.position || new THREE.Vector3(0,this.dimensions.y/2,-10);
 
@@ -561,6 +561,44 @@ class FireLineShader{
     }
 }
 
+class FireCircleShader{
+    constructor(config){
+        config = config || {};
+
+        this.frame = 0;
+	
+		this.size = config.size || 4;
+        this.dimensions = config.dim || config.dimension || new THREE.Vector3(8,4,1);
+        
+        this.position = config.position || new THREE.Vector3(0,this.dimensions.y/2,-10);
+
+        this.geometry = new THREE.CylinderGeometry(  this.dimensions.x/2,this.dimensions.x/2,this.dimensions.y,100 );
+        this.material = new THREE.ShaderMaterial({
+			transparent: true,
+			depthWrite: false,
+			depthTest: true,
+			uniforms: {
+				iTime: { value: 0 },
+				iResolution: { value: new THREE.Vector2(this.dimensions.x/this.size * 4, this.dimensions.y/this.size) }
+			},
+			vertexShader: fireVertexShader,
+			fragmentShader:fireFragmentShader
+		});
+        this.mesh = new THREE.Mesh( this.geometry, this.material);
+	
+		this.mesh.position.copy(this.position);
+		
+        this.speed = config.speed || 0.04;
+        
+        allObjects.push(this);
+    }
+
+    update(){
+		this.material.uniforms.iTime.value += this.speed;
+		this.mesh.rotation.y += 0.01;
+    }
+}
+
 
 function update(){
     for(let obj of allObjects){
@@ -568,4 +606,4 @@ function update(){
     }
 }
 
-export {Snow, Rain, FireLine, FireLineShader, CampFire, update}
+export {Snow, Rain, FireLine, FireLineShader, CampFire,FireCircleShader, update}

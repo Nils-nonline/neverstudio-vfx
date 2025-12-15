@@ -37,12 +37,19 @@ function createScene(scene){
     let fire2;
 
     for(let i = 0; i< 1; i++){
-        fire = new nvrstd.FireLineShader({"endPoints":[new THREE.Vector3(-50,0,-(i+1)*10),new THREE.Vector3(5,0,-(i+1)*10)]})
+        fire = new nvrstd.FireCircleShader({"endPoints":[new THREE.Vector3(-50,0,-(i+1)*10),new THREE.Vector3(5,0,-(i+1)*10)]})
         scene.add(fire.mesh);
     }
 
     let rain = new nvrstd.Rain();//new nvrstd.Snow();
     scene.add(rain.mesh);
+    
+    let blockGeo = new THREE.BoxGeometry(4,4,4);
+    let blockMat = new THREE.MeshBasicMaterial({"color":"red"});
+    let block = new THREE.Mesh(blockGeo, blockMat);
+    scene.add(block);
+    
+    block.position.set(0,2,-15);
 }
 
 createScene(scene)
