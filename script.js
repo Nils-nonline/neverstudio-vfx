@@ -37,7 +37,7 @@ function createScene(scene){
     let fire2;
 
     for(let i = 0; i< 1; i++){
-        fire = new nvrstd.FireLine({"endPoints":[new THREE.Vector3(-50,0,-(i+1)*10),new THREE.Vector3(5,0,-(i+1)*10)]})
+        fire = new nvrstd.FireLineShader({"endPoints":[new THREE.Vector3(-50,0,-(i+1)*10),new THREE.Vector3(5,0,-(i+1)*10)]})
         scene.add(fire.mesh);
     }
 
