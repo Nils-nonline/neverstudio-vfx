@@ -32,6 +32,8 @@ uniform vec2 iResolution;
 varying vec2 vUv;
 varying vec3 vNormal;
 
+#define voronoi 1
+    
 //Stackoverflow noise func
 float rand(float n) {
     return fract(sin(n) * 43758.5453123);
@@ -71,6 +73,37 @@ float simplex(vec2 v){
   return 100.0 * dot(m, g);
 }
 
+#if voronoi
+const mat2 myt = mat2(.12121212, .13131313, -.13131313, .12121212);
+const vec2 mys = vec2(1e4, 1e6);
+
+vec2 rhash(vec2 uv) {
+  uv *= myt;
+  uv *= mys;
+  return fract(fract(uv / mys) * uv);
+}
+
+vec3 hash(vec3 p) {
+  return fract(sin(vec3(dot(p, vec3(1.0, 57.0, 113.0)),
+                        dot(p, vec3(57.0, 113.0, 1.0)),
+                        dot(p, vec3(113.0, 1.0, 57.0)))) *
+               43758.5453);
+}
+
+float voronoi2d(const in vec2 point) {
+  vec2 p = floor(point);
+  vec2 f = fract(point);
+  float res = 0.0;
+  for (int j = -1; j <= 1; j++) {
+    for (int i = -1; i <= 1; i++) {
+      vec2 b = vec2(i, j);
+      vec2 r = vec2(b) - f + rhash(p + b);
+      res += 1. / pow(dot(r, r), 8.);
+    }
+  }
+  return pow(1. / res, 0.0625);
+}
+#endif
 
 void main()
 {
@@ -88,6 +121,10 @@ void main()
     mediump float r = 2.0 - y/280.0 + 2.0 * simplex(vec2(x*0.003,time * 0.01));
     
     mediump vec3 col = vec3(r,r * r * 0.425,0.0);
+    
+    #if voronoi
+    col += (voronoi2d(vec2(x/60.0, y/120.0 - time * 10.0))-0.5);
+    #endif
     
     if(col.x <= 0.3){
         gl_FragColor = vec4(col,col.x);
