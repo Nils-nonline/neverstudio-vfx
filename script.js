@@ -2,12 +2,6 @@ import * as THREE from '/three/build/three.module.js';
 
 import * as nvrstd from 'neverstudio-vfx';
 
-import { Lensflare, LensflareElement } from '/three/examples/jsm/objects/Lensflare.js'
-
-import {EffectPass, EffectComposer, RenderPass, NormalPass, SSAOEffect, BlendFunction} from '/postprocessing/build/index.js';
-
-const postprocessing = {EffectPass, EffectComposer, RenderPass, NormalPass, SSAOEffect, BlendFunction};
-
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
 camera.position.y = 2;
