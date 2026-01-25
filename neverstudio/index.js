@@ -155,7 +155,7 @@ class Snow{
 
         config = config || {};
 
-        this.position = new THREE.Vector3(0,20,0);
+        this.position = config.position || new THREE.Vector3(0,20,0);
 
         this.count = config.count ||1500;
 
@@ -262,7 +262,7 @@ class Rain{
 
         config = config || {};
 
-        this.position = new THREE.Vector3(0,20,0);
+        this.position = config.position || new THREE.Vector3(0,20,0);
 
         this.count = config.count ||5000;
 
@@ -443,7 +443,7 @@ class CampFire{
     }
 
     getInitialPos(randomizeHeight = false){
-        let vec = new THREE.Vector3(this.position.x + 4 * Math.random() - 2, this.position.y + Math.random() * (this.upperEnd-this.position.y), this.position.z + 4 * Math.random() - 2)
+        let vec = new THREE.Vector3(this.position.x + 4 * Math.random() - 2, this.position.y + Math.random() * (this.upperEnd), this.position.z + 4 * Math.random() - 2)
         
         return [vec.x, vec.y, vec.z]
     }
@@ -464,10 +464,11 @@ class CampFire{
             matrix.decompose(pos, quaternion, scale);
 
             pos = this.noise[i]["lastPos"] || pos;
+            
 
             pos.add(new THREE.Vector3( 0, noise["speed"]*this.speed, 0));
 
-            if(pos.y > this.upperEnd){
+            if((pos.y-this.position.y) > this.upperEnd){
                 pos.set(...this.getInitialPos())
             }
 
@@ -475,7 +476,7 @@ class CampFire{
 
             let change = pos.distanceTo(this.position)/3
 
-            let x = pos.y/this.upperEnd;
+            let x = (pos.y-this.position.y)/this.upperEnd;
             let drag = 1 - x//x*5 * Math.exp(-x*5+1)
             //(1.4 - Math.exp(((x*2 - 1)**2))/2)
 
@@ -489,7 +490,7 @@ class CampFire{
 
             this.mesh.setMatrixAt(i, matrix)
 
-            let time = pos.y/(noise["speed"]*this.speed)
+            let time = (pos.y-this.position.y)/(noise["speed"]*this.speed)
             this.mesh.setColorAt(i, new THREE.Color(1,1-0.005*time,1-0.01*time));
         }
         

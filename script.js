@@ -28,14 +28,12 @@ function createScene(scene){
     scene.add(light);
 
     let fire;
-    let fire2;
 
-    for(let i = 0; i< 1; i++){
-        fire = new nvrstd.FireCircleShader({"endPoints":[new THREE.Vector3(-50,0,-(i+1)*10),new THREE.Vector3(5,0,-(i+1)*10)]})
-        scene.add(fire.mesh);
-    }
+    fire = new nvrstd.CampFire({"position":new THREE.Vector3(0,0,-10), "upperEnd":3})
+    scene.add(fire.mesh);
+    
 
-    let rain = new nvrstd.Snow();//new nvrstd.Snow();
+    let rain = new nvrstd.Rain();
     scene.add(rain.mesh);
     
     let blockGeo = new THREE.BoxGeometry(4,4,4);
