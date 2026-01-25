@@ -20,7 +20,7 @@ varying vec3 vNormal;
 
 void main() {
 	vUv = uv;
-	vNormal = normalize(normalMatrix * normal);
+	vNormal = normalize(normal);//normalMatrix * normal is local normal
     gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
 }
     `

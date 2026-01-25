@@ -41,7 +41,7 @@ function createScene(scene){
         scene.add(fire.mesh);
     }
 
-    let rain = new nvrstd.Rain();//new nvrstd.Snow();
+    let rain = new nvrstd.Snow();//new nvrstd.Snow();
     scene.add(rain.mesh);
     
     let blockGeo = new THREE.BoxGeometry(4,4,4);
