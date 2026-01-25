@@ -46,40 +46,40 @@ with ```config```being a json that includes the respective config. This can alwa
 
 ```js
 let snow = new nvrstd.Snow({"count":<numParticles>:Number, "lowerEnd":<lower-end>:Number, "upperEnd":<upper-end>:Number, "position":<position-of-center>:THREE.Vector3, "width":<width>:Number, "depth":<depth>:Number, "track":<coor-to-be-tracked>:THREE.Vector3, "speed":<falling-speed>:Number});
-snow.add(snow.mesh);
+scene.add(snow.mesh);
 ```
 
 ## Rain
 
 ```js
 let rain = new nvrstd.Rain({"count":<numParticles>:Number, "lowerEnd":<lower-end>:Number, "upperEnd":<upper-end>:Number,"position":<position-of-center>:THREE.Vector3, "width":<width>:Number, "depth":<depth>:Number, "track":<coor-to-be-tracked>:THREE.Vector3, "speed":<falling-speed>:Number});
-snow.add(rain.mesh);
+scene.add(rain.mesh);
 ```
 
 ## CampFire
 
 ```js
 let campFire = new nvrstd.CampFire({"count":<numParticles>:Number, "position":<lower-end>:THREE.Vector3, "upperEnd":<upper-end>:Number, "position":<position-of-lower-center>:THREE.Vector3, "speed":<moving-speed>:Number});
-snow.add(campFire.mesh);
+scene.add(campFire.mesh);
 ```
 
 ## FireLine
 
 ```js
 let fireLine = new nvrstd.FireLine({"count":<numParticles>:Number, "endPoints":[<left-end-coor>:THREE.Vector3, <right-end-coor>:THREE.Vector3], "upperEnd":<upper-end>:Number, "speed":<moving-speed>:Number});
-snow.add(fireLine.mesh);
+scene.add(fireLine.mesh);
 ```
 
 ## FireLineShader
 
 ```js
 let fireLine = new nvrstd.FireLineShader({"size":<fire-size>:Number, "dim":<fire-block-dimensions>:THREE.Vector3, "position":<position>:THREE.Vector3, "speed":<moving-speed>:Number});
-snow.add(fireLine.mesh);
+scene.add(fireLine.mesh);
 ```
 
 ## FireCircleShader
 
 ```js
 let fireLine = new nvrstd.FireLineShader({"size":<fire-size>:Number, "dim":<fire-block-dimensions>:THREE.Vector3, "position":<position>:THREE.Vector3, "speed":<moving-speed>:Number});
-snow.add(fireLine.mesh);
+scene.add(fireLine.mesh);
 ```
