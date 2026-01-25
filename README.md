@@ -80,6 +80,6 @@ scene.add(fireLine.mesh);
 ## FireCircleShader
 
 ```js
-let fireLine = new nvrstd.FireLineShader({"size":<fire-size>:Number, "dim":<fire-block-dimensions>:THREE.Vector3, "position":<position>:THREE.Vector3, "speed":<moving-speed>:Number});
-scene.add(fireLine.mesh);
+let fireCircle = new nvrstd.FireLineShader({"size":<fire-size>:Number, "dim":<fire-block-dimensions>:THREE.Vector3, "position":<position>:THREE.Vector3, "speed":<moving-speed>:Number});
+scene.add(fireCircle.mesh);
 ```
