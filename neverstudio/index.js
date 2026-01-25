@@ -145,6 +145,14 @@ let allObjects = [];
 
 class Snow{
     constructor(config){
+
+        //efficiency
+        this._matrix = new THREE.Matrix4();
+        this._pos = new THREE.Vector3();
+        this._quat = new THREE.Quaternion();
+        this._scale = new THREE.Vector3();
+        //
+
         config = config || {};
 
         this.position = new THREE.Vector3(0,20,0);
@@ -212,15 +220,15 @@ class Snow{
 
         this.frame++;
 
-        let matrix = new THREE.Matrix4();
+        const matrix = this._matrix;
 
         for (let i = 0; i < this.count; i++) {
             let noise = this.noise[i];
 
             this.mesh.getMatrixAt(i, matrix)
-            let pos = new THREE.Vector3();
-            let quaternion = new THREE.Quaternion();
-            let scale = new THREE.Vector3();
+            const pos = this._pos;
+            const quaternion = this._quat;
+            const scale = this._scale;
 
             matrix.decompose(pos, quaternion, scale);
 
@@ -245,6 +253,13 @@ class Snow{
 
 class Rain{
     constructor(config){
+        //efficiency
+        this._matrix = new THREE.Matrix4();
+        this._pos = new THREE.Vector3();
+        this._quat = new THREE.Quaternion();
+        this._scale = new THREE.Vector3();
+        //
+
         config = config || {};
 
         this.position = new THREE.Vector3(0,20,0);
@@ -310,15 +325,15 @@ class Rain{
 
         this.frame++;
 
-        let matrix = new THREE.Matrix4();
+        const matrix = this._matrix;
 
         for (let i = 0; i < this.count; i++) {
             let noise = this.noise[i];
 
             this.mesh.getMatrixAt(i, matrix)
-            let pos = new THREE.Vector3();
-            let quaternion = new THREE.Quaternion();
-            let scale = new THREE.Vector3();
+            const pos = this._pos;
+            const quaternion = this._quat;
+            const scale = this._scale;
 
             matrix.decompose(pos, quaternion, scale);
 
@@ -343,6 +358,13 @@ class Rain{
 
 class CampFire{
     constructor(config){
+        //efficiency
+        this._matrix = new THREE.Matrix4();
+        this._pos = new THREE.Vector3();
+        this._quat = new THREE.Quaternion();
+        this._scale = new THREE.Vector3();
+        //
+
         config = config || {};
 
         this.count = config.count || 1000;
@@ -429,15 +451,15 @@ class CampFire{
     update(){
         this.frame++;
 
-        let matrix = new THREE.Matrix4();
+       const matrix = this._matrix;
 
         for (let i = 0; i < this.count; i++) {
             let noise = this.noise[i];
 
             this.mesh.getMatrixAt(i, matrix)
-            let pos = new THREE.Vector3();
-            let quaternion = new THREE.Quaternion();
-            let scale = new THREE.Vector3();
+            let pos = this._pos;
+            const quaternion = this._quat;
+            const scale = this._scale;
 
             matrix.decompose(pos, quaternion, scale);
 
@@ -478,6 +500,13 @@ class CampFire{
 
 class FireLine{
     constructor(config){
+        //efficiency
+        this._matrix = new THREE.Matrix4();
+        this._pos = new THREE.Vector3();
+        this._quat = new THREE.Quaternion();
+        this._scale = new THREE.Vector3();
+        //
+
         config = config || {};
 
         this.position = config.position || new THREE.Vector3(0,0,0);
@@ -567,15 +596,15 @@ class FireLine{
     update(){
         this.frame++;
 
-        let matrix = new THREE.Matrix4();
+        const matrix = this._matrix;
 
         for (let i = 0; i < this.count; i++) {
             let noise = this.noise[i];
 
             this.mesh.getMatrixAt(i, matrix)
-            let pos = new THREE.Vector3();
-            let quaternion = new THREE.Quaternion();
-            let scale = new THREE.Vector3();
+            let pos = this._pos;
+            const quaternion = this._quat;
+            const scale = this._scale;
 
             matrix.decompose(pos, quaternion, scale);
 
