@@ -35,13 +35,6 @@ function createScene(scene){
 
     let rain = new nvrstd.Rain();
     scene.add(rain.mesh);
-    
-    let blockGeo = new THREE.BoxGeometry(4,4,4);
-    let blockMat = new THREE.MeshBasicMaterial({"color":"red"});
-    let block = new THREE.Mesh(blockGeo, blockMat);
-    scene.add(block);
-    
-    block.position.set(0,2,-15);
 }
 
 createScene(scene)
