@@ -147,15 +147,28 @@ class Snow{
     constructor(config){
         config = config || {};
 
-        this.count = config.count ||1000;
-        this.lowerEnd = config.lowerEnd || 0;
-        this.upperEnd = config.upperEnd || 30;
+        this.position = new THREE.Vector3(0,20,0);
+
+        this.count = config.count ||1500;
+
+        this.lowerEnd = config.lowerEnd || -20;
+        this.upperEnd = config.upperEnd || 20;
+
+        
+
+        this.width = config.width || 100;
+        this.depth = config.depth || 100;
+
+        this.track = config.track;
 
         this.frame = 0;
 
         this.geometry = new THREE.IcosahedronGeometry(0.05,0);
         this.material = new THREE.MeshBasicMaterial()
         this.mesh = new THREE.InstancedMesh( this.geometry, this.material, this.count);
+
+        this.mesh.frustumCulled = false;
+        this.mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
 
         this.speed = config.speed || 0.1;
 
@@ -185,7 +198,7 @@ class Snow{
         let matrix = new THREE.Matrix4();
 
         for (let i = 0; i < this.count; i++) {
-            matrix.setPosition(Math.random() * 100-50, this.upperEnd, Math.random() * 100-50)
+            matrix.setPosition(this.position.x + Math.random() * this.width-this.width/2, this.position.y + this.upperEnd, this.position.z + Math.random() * this.depth-this.depth/2)
             this.mesh.setMatrixAt(i, matrix)
         }
 
@@ -193,6 +206,10 @@ class Snow{
     }
 
     update(){
+        if(this.track){
+            this.position.copy(this.track);
+        }
+
         this.frame++;
 
         let matrix = new THREE.Matrix4();
@@ -207,8 +224,13 @@ class Snow{
 
             matrix.decompose(pos, quaternion, scale);
 
-            if(pos.y < this.lowerEnd){
-                pos.y = this.upperEnd;
+            if(pos.y < this.position.y + this.lowerEnd){
+                pos.set(this.position.x + Math.random() * this.width-this.width/2, this.position.y + this.upperEnd, this.position.z + Math.random() * this.depth-this.depth/2)
+
+            }
+
+            if(pos.y > this.position.y + this.upperEnd){
+                pos.set(this.position.x + Math.random() * this.width-this.width/2, this.position.y + this.lowerEnd, this.position.z + Math.random() * this.depth-this.depth/2)
             }
 
             matrix.setPosition(pos.x + Math.sin(this.frame/10 + noise["y_offset"])/50 * noise["x_factor"], pos.y - this.speed * noise["speed"], pos.z + Math.sin(this.frame/10 + noise["y_offset"])/50  * noise["z_factor"]);
@@ -225,15 +247,28 @@ class Rain{
     constructor(config){
         config = config || {};
 
+        this.position = new THREE.Vector3(0,20,0);
+
         this.count = config.count ||5000;
-        this.lowerEnd = config.lowerEnd || 0;
-        this.upperEnd = config.upperEnd || 30;
+
+        this.lowerEnd = config.lowerEnd || -20;
+        this.upperEnd = config.upperEnd || 20;
+
+        
+
+        this.width = config.width || 100;
+        this.depth = config.depth || 100;
+
+        this.track = config.track;
 
         this.frame = 0;
 
         this.geometry = new THREE.BoxGeometry(0.05, 0.5, 0.05)
         this.material = new THREE.MeshBasicMaterial({"transparent":true,"opacity":0.8})
         this.mesh = new THREE.InstancedMesh( this.geometry, this.material, this.count);
+
+        this.mesh.frustumCulled = false;
+        this.mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
 
         this.speed = config.speed || 0.5;
 
@@ -255,11 +290,12 @@ class Rain{
         }
     }
 
+
     alignGrid(){
         let matrix = new THREE.Matrix4();
 
         for (let i = 0; i < this.count; i++) {
-            matrix.setPosition(Math.random() * 100-50, this.upperEnd, Math.random() * 100-50)
+            matrix.setPosition(this.position.x + Math.random() * this.width-this.width/2, this.position.y + this.upperEnd, this.position.z + Math.random() * this.depth-this.depth/2)
             this.mesh.setMatrixAt(i, matrix)
             this.mesh.setColorAt(i, new THREE.Color(0.6,0.6,1))
         }
@@ -268,6 +304,10 @@ class Rain{
     }
 
     update(){
+        if(this.track){
+            this.position.copy(this.track);
+        }
+
         this.frame++;
 
         let matrix = new THREE.Matrix4();
@@ -282,8 +322,13 @@ class Rain{
 
             matrix.decompose(pos, quaternion, scale);
 
-            if(pos.y < this.lowerEnd){
-                pos.y = this.upperEnd;
+            if(pos.y < this.position.y + this.lowerEnd){
+                pos.set(this.position.x + Math.random() * this.width-this.width/2, this.position.y + this.upperEnd, this.position.z + Math.random() * this.depth-this.depth/2)
+
+            }
+
+            if(pos.y > this.position.y + this.upperEnd){
+                pos.set(this.position.x + Math.random() * this.width-this.width/2, this.position.y + this.lowerEnd, this.position.z + Math.random() * this.depth-this.depth/2)
             }
 
             matrix.setPosition(pos.x, pos.y - this.speed * noise["speed"], pos.z);
@@ -311,6 +356,9 @@ class CampFire{
         this.geometry = new THREE.IcosahedronGeometry(0.15,0);
         this.material = new THREE.MeshBasicMaterial({"transparent":true,"opacity":0.8})
         this.mesh = new THREE.InstancedMesh( this.geometry, this.material, this.count);
+
+        this.mesh.frustumCulled = false;
+        this.mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
 
         this.speed = config.speed || 0.01;
 
@@ -447,6 +495,9 @@ class FireLine{
         this.geometry = new THREE.IcosahedronGeometry(0.15,0);
         this.material = new THREE.MeshBasicMaterial({"transparent":true,"opacity":0.8})
         this.mesh = new THREE.InstancedMesh( this.geometry, this.material, this.count);
+
+        this.mesh.frustumCulled = false;
+        this.mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
 
         this.speed = config.speed || 0.04;
 
