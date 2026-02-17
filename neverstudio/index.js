@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-
+import { ConvexObjectBreaker } from '/three/examples/jsm/misc/ConvexObjectBreaker.js';
 
 /*
 
@@ -718,10 +718,100 @@ class FireCircleShader{
 }
 
 
+class BreakableObject{
+    constructor(config){
+        config = config || {};
+
+        this.frame = 0;
+
+        if(!(config.target||config.mesh)){
+            this.dimensions = config.dim || config.dimension || new THREE.Vector3(4,4,4);
+        
+            this.position = config.position || new THREE.Vector3(0,0,-10);
+
+            this.geometry = new THREE.BoxGeometry(  this.dimensions.x,this.dimensions.y,this.dimensions.z,10,10,10 );
+            this.material = new THREE.MeshBasicMaterial({"transparent":true,"opacity":0.6})
+
+            this.mesh = new THREE.Mesh( this.geometry, this.material);
+
+            this.mesh.position.copy(this.position)
+
+            console.warn("Shattered is meant to be instanciated on already exisiting objects! It works either way.")
+        }else{
+            this.mesh = config.target||config.mesh;
+        }
+        
+        this.breaker = new ConvexObjectBreaker(0.5);
+
+        this.mass = config.mass || 100;
+        this.velocity = config.velocity || config.speed || config.v || new THREE.Vector3(0,0,0);
+        this.angVelocity = new THREE.Vector3(0,0,0);
+
+        this.maxRad = config.maxRad || 3;
+        this.maxRand = config.maxRand || 2;
+
+        this.breaker.prepareBreakableObject(this.mesh, this.mass, this.velocity, this.angVelocity, true);
+
+        this.intact = true;
+        this.impulse;
+
+        allObjects.push(this);
+    }
+
+    impactByPoint(position, normal, strength = 1){
+        if(!this.intact) return
+
+        this.intact = false;
+
+        const parent = this.mesh.parent;
+        
+        const shards = this.breaker.subdivideByImpact(this.mesh, position, normal, this.maxRad, this.maxRand);
+
+        this.position = this.mesh.position;
+
+        parent.remove(this.mesh)
+
+        this.mesh = new THREE.Object3D()
+        
+        for(const shard of shards){
+            this.mesh.add(shard)
+            shard.impulse = position.clone().sub(shard.position).multiplyScalar(-strength * 0.2)
+        }
+        
+        parent.add(this.mesh)
+    }
+
+    impactByIntersect(intersection){
+        this.impactByPoint(intersection.point, intersection.normal);
+    }
+
+    update(){
+        if(!this.intact){
+            for(const c of this.mesh.children){
+                c.position.y -= 0.5;
+
+                if(c.impulse){
+                    c.position.add(c.impulse)
+                    c.impulse.x= Math.sign(c.impulse.x) * Math.max(0, Math.abs(c.impulse.x) - 0.005)
+                    c.impulse.y= Math.sign(c.impulse.y) * Math.max(0, Math.abs(c.impulse.y) - 0.005)
+                    c.impulse.z= Math.sign(c.impulse.z) * Math.max(0, Math.abs(c.impulse.z) - 0.005)
+
+
+                    if(this.position.distanceTo(c.position) > 10){
+                        this.mesh.remove(c)
+                    }
+                }
+            }
+        }
+    }
+
+}
+
+
 function update(){
     for(let obj of allObjects){
         obj.update();
     }
 }
 
-export {Snow, Rain, FireLine, FireLineShader, CampFire,FireCircleShader, update}
+export {allObjects, Snow, Rain, FireLine, FireLineShader, CampFire,FireCircleShader, BreakableObject, update}
