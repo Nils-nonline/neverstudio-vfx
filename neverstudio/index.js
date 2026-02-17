@@ -786,6 +786,7 @@ class BreakableObject{
     }
 
     update(){
+        this.mesh.position.add(this.velocity)
         if(!this.intact){
             for(const c of this.mesh.children){
                 c.position.y -= 0.5;

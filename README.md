@@ -83,3 +83,10 @@ scene.add(fireLine.mesh);
 let fireCircle = new nvrstd.FireLineShader({"size":<fire-size>:Number, "dim":<fire-block-dimensions>:THREE.Vector3, "position":<position>:THREE.Vector3, "speed":<moving-speed>:Number});
 scene.add(fireCircle.mesh);
 ```
+
+## BreakableObject
+
+```js
+let breakableObject = new nvrstd.BreakableObject({"target":<object-to-break>:THREE.Object3d, "mass":<mass-of-object>:Number,"velocity":<velocity-of-object>:THREE.Vector3,"maxRad":<max-radial-segments>:Number,"maxRand":<max-random-segments>:Number,});
+scene.add(breakableObject.mesh);
+```
