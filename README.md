@@ -89,4 +89,8 @@ scene.add(fireCircle.mesh);
 ```js
 let breakableObject = new nvrstd.BreakableObject({"target":<object-to-break>:THREE.Object3d, "mass":<mass-of-object>:Number,"velocity":<velocity-of-object>:THREE.Vector3,"maxRad":<max-radial-segments>:Number,"maxRand":<max-random-segments>:Number});
 scene.add(breakableObject.mesh);
+
+breakableObject.impactByPoint(<position>:THREE.Vector3, <normal>:THREE.Vector3, <strength>:Number)
+//OR
+breakableObject.impactByIntersect(<raycast-intersect-result>)
 ```
